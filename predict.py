@@ -17,18 +17,18 @@ args = parser.parse_args()
 if args.category_names is not None:
     with open(args.category_names, 'r') as f:
         category_names = json.load(f)
-        
+
 if args.top_k is None:
     i_top_k = 1
 else:
     i_top_k = args.top_k
-        
+
 # Load saved model
 saved_model = tf.keras.models.load_model(args.saved_model, custom_objects={'KerasLayer':hub.KerasLayer})
 saved_model.summary()
 
 
-# 
+#
 
 def process_image(image):
     image = tf.cast(image, tf.float32)
@@ -53,7 +53,7 @@ print(classes.numpy())
 if args.category_names is not None:
     names = []
     for i in range(i_top_k):
-        names.append(category_names[classes.numpy()[0,i].astype(str)])
-        
-    print(category_names[classes.numpy()[0,0].astype(str)])
+        names.append(category_names[(classes.numpy()[0,i]+1).astype(str)])
+
+    print(category_names[(classes.numpy()[0,0]+1).astype(str)])
     print(probs.numpy()[0,0])
