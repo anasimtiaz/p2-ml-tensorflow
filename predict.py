@@ -43,7 +43,7 @@ def predict(image_path, model, top_k):
     processed_test_image = np.expand_dims(processed_test_image, axis = 0)
     prediction = model.predict(processed_test_image)
     probs, classes = tf.math.top_k(prediction, k=top_k)
-    return probs, classes
+    return probs, classes+1
 
 
 probs, classes = predict(args.image, saved_model, i_top_k)
@@ -53,7 +53,7 @@ print(classes.numpy())
 if args.category_names is not None:
     names = []
     for i in range(i_top_k):
-        names.append(category_names[(classes.numpy()[0,i]+1).astype(str)])
+        names.append(category_names[classes.numpy()[0,i].astype(str)])
 
-    print(category_names[(classes.numpy()[0,0]+1).astype(str)])
+    print(category_names[classes.numpy()[0,0].astype(str)])
     print(probs.numpy()[0,0])
